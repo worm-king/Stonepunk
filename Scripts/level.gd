@@ -38,10 +38,13 @@ func _on_bug_spawn_timer_timeout():
 
 
 func _on_player_death():
-	get_tree().paused = true
 	print("game over")
 	print("Final score: " + str(Globals.score))
+	get_tree().paused = true
+	$GameOverTimer.start()
 	
+
+
+func _on_game_over_timer_timeout():
 	game_over.emit()
 	queue_free()
-	

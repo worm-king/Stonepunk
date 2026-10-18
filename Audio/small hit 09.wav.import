@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://brq2ibdenbne"
+path="res://.godot/imported/small hit 09.wav-9cecaede9e2b026598e30c8226285b11.sample"
+
+[deps]
+
+source_file="res://Stonepunk/Audio/small hit 09.wav"
+dest_files=["res://.godot/imported/small hit 09.wav-9cecaede9e2b026598e30c8226285b11.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

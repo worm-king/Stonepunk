@@ -129,14 +129,15 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g0wjs"]
-radius = 7.0
-height = 38.0
+radius = 5.0
+height = 32.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ov6ij"]
-height = 44.0
+radius = 6.0
+height = 32.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7yhpe"]
-radius = 6.0
+radius = 4.0
 height = 20.0
 
 [node name="Player" type="CharacterBody2D"]
@@ -166,6 +167,7 @@ shape = SubResource("CapsuleShape2D_7yhpe")
 disabled = true
 
 [node name="DamageTimer" type="Timer" parent="."]
+wait_time = 0.5
 one_shot = true
 
 [node name="AttackingTimer" type="Timer" parent="."]
@@ -176,6 +178,11 @@ one_shot = true
 
 [node name="PlayerAudio" type="AudioStreamPlayer2D" parent="."]
 
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
 [connection signal="area_entered" from="HitBoxBase" to="." method="_on_hit_box_base_area_entered"]
 [connection signal="timeout" from="DamageTimer" to="." method="_on_damage_timer_timeout"]
 [connection signal="timeout" from="AttackingTimer" to="." method="_on_attacking_timer_timeout"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

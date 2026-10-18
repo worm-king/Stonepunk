@@ -107,8 +107,17 @@ func _on_hit_box_area_entered(area):
 
 
 func _on_attack_area_area_entered(area):
-	if area.get_parent() != null:
-		attack()
+	if area.get_parent() != null && !(area.get_parent().has_method("do_not_count")):
+		#print("attack hit Player")
+		print(area)
+		if area.has_method("do_not_count"):
+			#print("METHOD FOUND")
+			pass
+		else:
+			attack()
+		
+	#else:
+		#print(area)
 
 
 func _on_despawn_timer_timeout():

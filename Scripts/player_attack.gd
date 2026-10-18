@@ -31,6 +31,8 @@ func _on_area_entered(area):
 		#bug_hit.emit(bug, damage)
 		
 
+func do_not_count():
+	pass #don't want to count this as part of the Player's hitbox
 
 func _on_despawn_timer_timeout():
 	queue_free()

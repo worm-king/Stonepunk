@@ -17,3 +17,6 @@ func _on_bug_area_area_entered(area):
 	#print(area)
 	#print(area.get_parent())
 	#area.get_parent().bug_escape()
+
+func do_not_count():
+	pass #don't want to count this as part of the Player's hitbox

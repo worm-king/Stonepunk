@@ -10,15 +10,18 @@ const JUMP_VELOCITY = 0
 @onready var sprite_2d = $AnimatedSprite2D
 @onready var hit_box_base = $HitBoxBase
 
+
 @onready var taking_damage := false
 @onready var hp := 5
 @onready var attacking = false
 @onready var attack_damage := 1
 @onready var attack_scene := preload("res://Stonepunk/Scenes/player_attack.tscn")
+@onready var alive = true
 
 signal death()
 
 var x_direction = 1
+var hit_tween
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -45,12 +48,12 @@ func _physics_process(delta):
 		#print("walk")
 		sprite_2d.flip_h = true
 		sprite_2d.play("walk01")
-		hit_box_base.position.x = -6
+		#hit_box_base.position.x = -6
 		x_direction = -1
 	elif !attacking && direction_x > 0:
 		sprite_2d.flip_h = false
 		sprite_2d.play("walk01")
-		hit_box_base.position.x = 6
+		#hit_box_base.position.x = 6
 		x_direction = 1
 	elif !attacking && direction_y !=0:
 		sprite_2d.play("walk01")
@@ -106,20 +109,29 @@ func _process(delta):
 			#$DamageTimer.start()
 
 func received_attack(damage):
-	if !taking_damage:
+	if !taking_damage && alive:
 		taking_damage = true
 		$DamageTimer.start()
 		if damage > 0:
+			hit_tweening()
 			position.x -= x_direction * 4
 		Globals.increment_hp(-damage)
 		#should add audio here
 		hp -= damage
 		print("hp : " + str(hp))
 		if hp <= 0:
-			death.emit()
-			#print("emitting death signal from player")
+			alive = false
+			var death_sound = Globals.big_hit_sounds.pick_random()
+			player_audio.stream = death_sound
+			player_audio.play()
+			$DeathTimer.start()
 		else:
-			pass
+			var hit_sound = Globals.small_hit_sounds.pick_random()
+			player_audio.stream = hit_sound
+			player_audio.play()
+			#print("emitting death signal from player")
+		#else:
+			#pass
 			#print("damage taken by Player:   " + str(damage))
 
 func _on_damage_timer_timeout():
@@ -130,3 +142,13 @@ func _on_attacking_timer_timeout():
 	attacking = false
 	$HitBoxBase/CollisionShape2D.disabled = false
 	$HitBoxAttacking/HitBoxCollider.disabled = true
+
+
+func _on_death_timer_timeout():
+	death.emit()
+
+func hit_tweening():
+	print("tweening")
+	hit_tween = create_tween() 
+	hit_tween.tween_property(sprite_2d, "modulate", Color.PALE_VIOLET_RED, 0.3) 
+	hit_tween.tween_property(sprite_2d, "modulate", Color.WHITE, 0.3)
