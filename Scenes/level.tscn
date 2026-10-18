@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://dsfmbhp67r756"]
+
+[ext_resource type="Script" path="res://Stonepunk/Scripts/level.gd" id="1_3im7v"]
+[ext_resource type="Texture2D" uid="uid://c0qmfesknli1y" path="res://Stonepunk/Sprites/Background01.2.png" id="2_lhkky"]
+[ext_resource type="PackedScene" uid="uid://dwpc5aionemi2" path="res://Stonepunk/Scenes/player.tscn" id="3_0jth2"]
+[ext_resource type="PackedScene" uid="uid://dc4wtfhyu46nl" path="res://Stonepunk/Scenes/bug_bounds.tscn" id="5_jd15i"]
+[ext_resource type="PackedScene" uid="uid://dfpi56vpsp8rf" path="res://Stonepunk/Scenes/user_interface_control.tscn" id="5_tsw4j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0i7xg"]
+size = Vector2(331, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2scpm"]
+size = Vector2(20, 199)
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_3im7v")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("2_lhkky")
+
+[node name="BorderTop" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderTop"]
+position = Vector2(-1, -107)
+shape = SubResource("RectangleShape2D_0i7xg")
+
+[node name="BorderBottom" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderBottom"]
+position = Vector2(0.5, 100)
+shape = SubResource("RectangleShape2D_0i7xg")
+
+[node name="BorderLeft" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderLeft"]
+position = Vector2(-170, -1.5)
+shape = SubResource("RectangleShape2D_2scpm")
+
+[node name="BorderRight" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderRight"]
+position = Vector2(170, -1)
+shape = SubResource("RectangleShape2D_2scpm")
+
+[node name="BugBounds" parent="." instance=ExtResource("5_jd15i")]
+position = Vector2(-190, -153)
+
+[node name="BugSpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." groups=["level"]]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Bugs" type="Node2D" parent="YSort"]
+
+[node name="Player" parent="YSort" instance=ExtResource("3_0jth2")]
+
+[node name="UserInterfaceControl" parent="." instance=ExtResource("5_tsw4j")]
+
+[connection signal="timeout" from="BugSpawnTimer" to="." method="_on_bug_spawn_timer_timeout"]
+[connection signal="death" from="YSort/Player" to="." method="_on_player_death"]

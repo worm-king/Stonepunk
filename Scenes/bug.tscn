@@ -1,0 +1,129 @@
+[gd_scene load_steps=15 format=3 uid="uid://77w8bm2mtkt1"]
+
+[ext_resource type="Script" path="res://Stonepunk/Scripts/bug.gd" id="1_b4r4y"]
+[ext_resource type="Texture2D" uid="uid://dekvct4ulgqql" path="res://Stonepunk/Sprites/Bugs/BugSquish01.1.png" id="2_qxkja"]
+[ext_resource type="Texture2D" uid="uid://c3rwcqvuedc5d" path="res://Stonepunk/Sprites/Bugs/BugWalk01.1.png" id="3_qea5x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nebs"]
+atlas = ExtResource("2_qxkja")
+region = Rect2(0, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6sqnq"]
+atlas = ExtResource("2_qxkja")
+region = Rect2(80, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5t4w"]
+atlas = ExtResource("2_qxkja")
+region = Rect2(160, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1slby"]
+atlas = ExtResource("2_qxkja")
+region = Rect2(240, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dwcy"]
+atlas = ExtResource("3_qea5x")
+region = Rect2(0, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8mg0w"]
+atlas = ExtResource("3_qea5x")
+region = Rect2(80, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1qyd"]
+atlas = ExtResource("3_qea5x")
+region = Rect2(160, 0, 80, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14c1o"]
+atlas = ExtResource("3_qea5x")
+region = Rect2(240, 0, 80, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8lwpm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nebs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6sqnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5t4w")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_1slby")
+}],
+"loop": false,
+"name": &"squish01",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dwcy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8mg0w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1qyd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14c1o")
+}],
+"loop": true,
+"name": &"walk01",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ggkim"]
+radius = 7.0
+height = 28.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w6loh"]
+radius = 4.0
+height = 8.0
+
+[node name="Bug" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_b4r4y")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -23)
+sprite_frames = SubResource("SpriteFrames_8lwpm")
+animation = &"squish01"
+autoplay = "walk01"
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="Collider" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(5, -7)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ggkim")
+disabled = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="Collider" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(-4, -5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_w6loh")
+disabled = true
+
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 2.2
+one_shot = true
+
+[node name="DamageTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="SquishPlayer" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="area_entered" from="AttackArea" to="." method="_on_attack_area_area_entered"]
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_damage_timer_timeout"]
+[connection signal="finished" from="SquishPlayer" to="." method="_on_squish_player_finished"]

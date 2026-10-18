@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfpi56vpsp8rf"]
+
+[ext_resource type="Script" path="res://Stonepunk/Scripts/user_interface_control.gd" id="1_3gx38"]
+[ext_resource type="Texture2D" uid="uid://daoykalr6crdg" path="res://Stonepunk/Sprites/hearts empty 01.png" id="2_y5ijt"]
+[ext_resource type="Texture2D" uid="uid://bifxo4qqs6xlh" path="res://Stonepunk/Sprites/hearts full 01.png" id="3_oc15f"]
+[ext_resource type="FontFile" uid="uid://dj066c0kqxydg" path="res://Stonepunk/Sprites/stonepunk02.ttf" id="4_b52oe"]
+
+[node name="UserInterfaceControl" type="Control"]
+custom_minimum_size = Vector2(320, 180)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_3gx38")
+
+[node name="HpBar" type="TextureProgressBar" parent="." groups=["menu"]]
+texture_filter = 1
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 88.0
+offset_bottom = 24.0
+max_value = 5.0
+texture_under = ExtResource("2_y5ijt")
+texture_progress = ExtResource("3_oc15f")
+
+[node name="ScoreLabel" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -48.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 31.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.992157, 0.882353, 0.580392, 1)
+theme_override_colors/font_shadow_color = Color(0.164706, 0.0862745, 0.109804, 1)
+theme_override_fonts/font = ExtResource("4_b52oe")
+theme_override_font_sizes/font_size = 8
+text = "100"

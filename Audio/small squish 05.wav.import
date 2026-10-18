@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cwmi7db883xqk"
+path="res://.godot/imported/small squish 05.wav-fc5a77b9db9bbcc151543ccdf62719b0.sample"
+
+[deps]
+
+source_file="res://Stonepunk/Audio/small squish 05.wav"
+dest_files=["res://.godot/imported/small squish 05.wav-fc5a77b9db9bbcc151543ccdf62719b0.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
