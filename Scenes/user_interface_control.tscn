@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dfpi56vpsp8rf"]
+[gd_scene load_steps=11 format=3 uid="uid://dfpi56vpsp8rf"]
 
 [ext_resource type="Script" path="res://Stonepunk/Scripts/user_interface_control.gd" id="1_3gx38"]
 [ext_resource type="Texture2D" uid="uid://daoykalr6crdg" path="res://Stonepunk/Sprites/hearts empty 01.png" id="2_y5ijt"]
@@ -6,6 +6,10 @@
 [ext_resource type="FontFile" uid="uid://dj066c0kqxydg" path="res://Stonepunk/Sprites/stonepunk02.ttf" id="4_b52oe"]
 [ext_resource type="Texture2D" uid="uid://p1i11bchjs3c" path="res://Stonepunk/Sprites/GameOver01.png" id="5_aqiy1"]
 [ext_resource type="Texture2D" uid="uid://s8r5jnoios3k" path="res://Stonepunk/Sprites/Score01.png" id="6_i3ydl"]
+[ext_resource type="AudioStream" uid="uid://bwdg2d86sieg2" path="res://Stonepunk/Audio/Stonepunked.wav" id="7_7pb47"]
+[ext_resource type="Texture2D" uid="uid://bk3k237ifgb0b" path="res://Stonepunk/Sprites/MusicIcon01_on.png" id="8_h0cxr"]
+[ext_resource type="Texture2D" uid="uid://dlm05ayfiopj0" path="res://Stonepunk/Sprites/MusicIcon01_off.png" id="9_38mx4"]
+[ext_resource type="Texture2D" uid="uid://cf3s23mgsvwk6" path="res://Stonepunk/Sprites/MusicIcon01_off hover.png" id="10_m2m6s"]
 
 [node name="UserInterfaceControl" type="Control"]
 custom_minimum_size = Vector2(320, 180)
@@ -70,4 +74,25 @@ theme_override_font_sizes/font_size = 8
 
 [node name="GameOverTimer" type="Timer" parent="."]
 
+[node name="BgMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_7pb47")
+volume_db = -12.0
+
+[node name="MusicButton" type="TextureButton" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -36.0
+offset_right = 40.0
+offset_bottom = 4.0
+grow_vertical = 0
+toggle_mode = true
+texture_normal = ExtResource("8_h0cxr")
+texture_pressed = ExtResource("9_38mx4")
+texture_hover = ExtResource("10_m2m6s")
+
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
+[connection signal="finished" from="BgMusic" to="." method="_on_bg_music_finished"]
+[connection signal="pressed" from="MusicButton" to="." method="_on_music_button_pressed"]

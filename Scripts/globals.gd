@@ -26,10 +26,13 @@ extends Node
 @onready var hp := 5
 @onready var score = 0
 
+@onready var music_on = true
+
 var squish_sounds
 var swoosh_sounds
 var small_hit_sounds
 var big_hit_sounds
+var rando_bugs = [1,1,1,1,2]
 
 var user_interface
 
@@ -55,3 +58,6 @@ func increment_score(value):
 func increment_hp(value):
 	hp += value
 	user_interface.increment_hp(value)
+
+func game_over():
+	user_interface.game_over_ui()

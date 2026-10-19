@@ -23,14 +23,14 @@ func _process(delta):
 	pass
 
 func _on_button_mouse_entered():
-	print("hovering")
+	#print("hovering")
 	hovering = true
 	if !clicked:
 		ani_sprite.play("hover")
 
 
 func _on_button_mouse_exited():
-	print("done hovering")
+	#print("done hovering")
 	hovering = false
 	if !clicked:
 		ani_sprite.play("default")
@@ -38,7 +38,7 @@ func _on_button_mouse_exited():
 
 
 func _on_button_pressed():
-	pass
+	#pass
 	print("clicked")
 	if !clicked:
 		clicked = true

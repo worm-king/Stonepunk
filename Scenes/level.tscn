@@ -54,18 +54,18 @@ autostart = true
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="YSort" type="Node2D" parent="."]
-y_sort_enabled = true
 
 [node name="Bugs" type="Node2D" parent="YSort"]
+y_sort_enabled = true
 
-[node name="Player" parent="YSort" instance=ExtResource("3_0jth2")]
+[node name="Player" parent="YSort/Bugs" instance=ExtResource("3_0jth2")]
 
 [node name="UserInterfaceControl" parent="." instance=ExtResource("5_tsw4j")]
 
 [node name="GameOverTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 6.0
 one_shot = true
 
 [connection signal="timeout" from="BugSpawnTimer" to="." method="_on_bug_spawn_timer_timeout"]
-[connection signal="death" from="YSort/Player" to="." method="_on_player_death"]
+[connection signal="death" from="YSort/Bugs/Player" to="." method="_on_player_death"]
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]

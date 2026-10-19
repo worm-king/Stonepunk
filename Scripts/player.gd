@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 2500.0
+const SPEED = 3000.0
 const JUMP_VELOCITY = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -17,11 +17,16 @@ const JUMP_VELOCITY = 0
 @onready var attack_damage := 1
 @onready var attack_scene := preload("res://Stonepunk/Scenes/player_attack.tscn")
 @onready var alive = true
+@onready var dying = false
+@onready var idle = true
+@onready var walking = false
 
 signal death()
 
 var x_direction = 1
 var hit_tween
+
+
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -46,20 +51,42 @@ func _physics_process(delta):
 	#if direction x and y are 0 and not attack, play idle and don't look at flip
 	if !attacking && direction_x < 0:
 		#print("walk")
-		sprite_2d.flip_h = true
-		sprite_2d.play("walk01")
+		if !sprite_2d.flip_h:
+			sprite_2d.flip_h = true
+		if !walking && alive:
+			sprite_2d.play("walk01")
+			walking = true
+		idle = false
+		#print("walk from left walk")
 		#hit_box_base.position.x = -6
 		x_direction = -1
 	elif !attacking && direction_x > 0:
-		sprite_2d.flip_h = false
-		sprite_2d.play("walk01")
+		
+		if sprite_2d.flip_h:
+			sprite_2d.flip_h = false
+			print("unflip her")
+		if !walking && alive:
+			sprite_2d.play("walk01")
+			print("walking right")
+			walking = true
+		idle = false
+		#print("walk from right walk no flip")
 		#hit_box_base.position.x = 6
 		x_direction = 1
 	elif !attacking && direction_y !=0:
-		sprite_2d.play("walk01")
+		if !walking && alive:
+			sprite_2d.play("walk01")
+			walking = true
+		idle = false
+		#print("walk from y move")
 	elif !attacking && direction_x == 0 && direction_y == 0:
 		#print("idle")
-		sprite_2d.play("idle01")
+		if !idle && alive:
+			#print("IDLE!!!!!!!!!!!!!")
+			sprite_2d.play("idle02")
+			idle = true
+			walking = false
+		
 	
 	if direction_x != 0:
 		#print("move X")
@@ -80,15 +107,25 @@ func _physics_process(delta):
 	else:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 	
+	if !alive:
+		velocity = Vector2(0,0)
+		if !dying:
+			dying = true
+			walking = false
+			sprite_2d.play("death01")
+		#add something about death animation
+	
 	move_and_slide()
 
 func _process(delta):
-	if !attacking && Input.is_action_just_pressed("club"):
+	if !attacking && Input.is_action_just_pressed("club") && alive:
+		idle = false
+		walking = false
 		#print("use club")
 		player_audio.stream = Globals.swoosh_sounds.pick_random()
 		player_audio.play()
-		$HitBoxBase/CollisionShape2D.disabled = true
-		$HitBoxAttacking/HitBoxCollider.disabled = false
+		#$HitBoxBase/CollisionShape2D.disabled = true
+		#$HitBoxAttacking/HitBoxCollider.disabled = false
 		attacking = true
 		sprite_2d.play("club01")
 		$AttackingTimer.start()
@@ -114,13 +151,14 @@ func received_attack(damage):
 		$DamageTimer.start()
 		if damage > 0:
 			hit_tweening()
-			position.x -= x_direction * 4
+			#position.x -= x_direction * 4
 		Globals.increment_hp(-damage)
 		#should add audio here
 		hp -= damage
-		print("hp : " + str(hp))
+		#print("hp : " + str(hp))
 		if hp <= 0:
 			alive = false
+			#sprite_2d.play("death01")
 			var death_sound = Globals.big_hit_sounds.pick_random()
 			player_audio.stream = death_sound
 			player_audio.play()
@@ -140,15 +178,16 @@ func _on_damage_timer_timeout():
 
 func _on_attacking_timer_timeout():
 	attacking = false
-	$HitBoxBase/CollisionShape2D.disabled = false
-	$HitBoxAttacking/HitBoxCollider.disabled = true
+	#$HitBoxBase/CollisionShape2D.disabled = false
+	#$HitBoxAttacking/HitBoxCollider.disabled = true
 
 
 func _on_death_timer_timeout():
 	death.emit()
+	#print("dying in Player")
 
 func hit_tweening():
-	print("tweening")
+	#print("tweening")
 	hit_tween = create_tween() 
-	hit_tween.tween_property(sprite_2d, "modulate", Color.PALE_VIOLET_RED, 0.3) 
-	hit_tween.tween_property(sprite_2d, "modulate", Color.WHITE, 0.3)
+	hit_tween.tween_property(sprite_2d, "modulate", Color.PALE_VIOLET_RED, 0.2) 
+	hit_tween.tween_property(sprite_2d, "modulate", Color.WHITE, 0.2)

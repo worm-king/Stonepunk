@@ -1,8 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://dwpc5aionemi2"]
+[gd_scene load_steps=30 format=3 uid="uid://dwpc5aionemi2"]
 
 [ext_resource type="Script" path="res://Stonepunk/Scripts/player.gd" id="1_x50g1"]
 [ext_resource type="Texture2D" uid="uid://b12ddkanfyd6s" path="res://Stonepunk/Sprites/Attack01.1.png" id="2_7442p"]
 [ext_resource type="Texture2D" uid="uid://dck703pgbo5xp" path="res://Stonepunk/Sprites/Idle01.1.png" id="3_ruin8"]
+[ext_resource type="Texture2D" uid="uid://dx0t57k6tsjqi" path="res://Stonepunk/Sprites/Death01.png" id="4_gk0yo"]
 [ext_resource type="Texture2D" uid="uid://qt3kjfsylf4a" path="res://Stonepunk/Sprites/Walk01.1.png" id="4_oul3d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k7u4l"]
@@ -17,19 +18,39 @@ region = Rect2(96, 0, 96, 64)
 atlas = ExtResource("2_7442p")
 region = Rect2(192, 0, 96, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_esn4e"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5k4wb"]
 atlas = ExtResource("3_ruin8")
 region = Rect2(0, 0, 96, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_h4hqf"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_flcej"]
 atlas = ExtResource("3_ruin8")
 region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8aydk"]
+atlas = ExtResource("4_gk0yo")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xhh0"]
+atlas = ExtResource("4_gk0yo")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xb23t"]
+atlas = ExtResource("4_gk0yo")
+region = Rect2(192, 0, 96, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kl14v"]
 atlas = ExtResource("3_ruin8")
 region = Rect2(0, 0, 96, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0o0io"]
+atlas = ExtResource("3_ruin8")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4cxlj"]
+atlas = ExtResource("3_ruin8")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5rcia"]
 atlas = ExtResource("3_ruin8")
 region = Rect2(96, 0, 96, 64)
 
@@ -78,17 +99,31 @@ animations = [{
 "texture": SubResource("AtlasTexture_mpf3v")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_esn4e")
+"texture": SubResource("AtlasTexture_5k4wb")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_h4hqf")
+"texture": SubResource("AtlasTexture_flcej")
 }],
 "loop": false,
 "name": &"club01",
-"speed": 10.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_8aydk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xhh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xb23t")
+}],
+"loop": false,
+"name": &"death01",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.2,
 "texture": SubResource("AtlasTexture_kl14v")
 }, {
 "duration": 1.0,
@@ -96,7 +131,18 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle01",
-"speed": 2.0
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4cxlj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5rcia")
+}],
+"loop": true,
+"name": &"idle02",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -130,11 +176,11 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g0wjs"]
 radius = 5.0
-height = 32.0
+height = 38.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ov6ij"]
 radius = 6.0
-height = 32.0
+height = 38.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7yhpe"]
 radius = 4.0
@@ -145,38 +191,42 @@ texture_filter = 1
 script = ExtResource("1_x50g1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -10)
+texture_filter = 1
+position = Vector2(0, -31)
 sprite_frames = SubResource("SpriteFrames_d1gsc")
-animation = &"idle01"
+animation = &"idle02"
 autoplay = "idle01"
-frame = 1
-frame_progress = 0.672417
 
 [node name="HitBoxBase" type="Area2D" parent="."]
+position = Vector2(0, -21)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxBase"]
 shape = SubResource("CapsuleShape2D_g0wjs")
 
 [node name="ColliderBase" type="CollisionShape2D" parent="."]
+position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_ov6ij")
 
 [node name="HitBoxAttacking" type="Area2D" parent="."]
+position = Vector2(0, -21)
 
 [node name="HitBoxCollider" type="CollisionShape2D" parent="HitBoxAttacking"]
 shape = SubResource("CapsuleShape2D_7yhpe")
 disabled = true
 
 [node name="DamageTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.2
 one_shot = true
 
 [node name="AttackingTimer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.25
 one_shot = true
 
 [node name="Attacks" type="Node2D" parent="."]
+position = Vector2(0, -21)
 
 [node name="PlayerAudio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -21)
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 2.0

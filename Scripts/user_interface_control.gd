@@ -8,7 +8,11 @@ extends Control
 @onready var game_over = $GameOver
 @onready var final_score = $FinalScore
 @onready var final_score_label = $FinalScoreLabel
+@onready var music_button = $MusicButton
+@onready var bg_music = $BgMusic
 
+
+var music_on
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,6 +23,11 @@ func _ready():
 	game_over.hide()
 	final_score.hide()
 	final_score_label.hide()
+	if !Globals.music_on:
+		music_button.button_pressed = true
+	toggle_music(Globals.music_on)
+	#if music_on:
+		#bg_music.play()
 	
 
 
@@ -44,6 +53,34 @@ func game_over_ui():
 
 
 func _on_game_over_timer_timeout():
+	#print("run the ui game over")
 	final_score.show()
 	final_score_label.text = str(score)
 	final_score_label.show()
+
+func toggle_music(n):
+	if n == true:
+		if !music_on:
+			bg_music.play()
+		music_on = true
+		Globals.music_on = true
+	else:
+		bg_music.stream_paused = true
+		music_on = false
+		Globals.music_on = false
+
+
+func _on_music_button_pressed():
+	#print("current music status : " + str(music_on))
+	if music_on:
+		toggle_music(false)
+	else:
+		toggle_music(true)
+
+
+func _on_bg_music_finished():
+	if music_on:
+		bg_music.play()
+
+func do_not_count():
+	pass

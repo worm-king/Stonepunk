@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var player = $YSort/Player
+@onready var player = $YSort/Bugs/Player
 @onready var bugs = $YSort/Bugs
 
 @onready var current_level = 1
@@ -40,11 +40,14 @@ func _on_bug_spawn_timer_timeout():
 func _on_player_death():
 	print("game over")
 	print("Final score: " + str(Globals.score))
-	get_tree().paused = true
+	Globals.game_over()
+	#get_tree().paused = true
 	$GameOverTimer.start()
+	#get_tree().paused = true
 	
 
 
 func _on_game_over_timer_timeout():
+	
 	game_over.emit()
 	queue_free()
